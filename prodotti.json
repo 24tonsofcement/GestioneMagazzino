@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "nome": "Prodotto A",
+        "prezzoAcquisto": 10.5,
+        "quantità": 3,
+        "immagine": "img/prodottoA.jpg"
+    },
+    {
+        "id": 2,
+        "nome": "Prodotto B",
+        "prezzoAcquisto": 20.0,
+        "quantità": 2,
+        "immagine": "img/prodottoB.jpg"
+    },
+    {
+        "id": 3,
+        "nome": "Prodotto C",
+        "prezzoAcquisto": 15.3,
+        "quantità": 4,
+        "immagine": "img/prodottoC.jpg"
+    }
+]
