@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabella Prodotti con Prezzo di Vendita e Guadagno</title>
-    <!-- Link a Bootstrap CSS per le immagini responsive -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
     <h2>Prodotti</h2>
     
-    <!-- Campo per inserire la percentuale di ricarico -->
     <label for="percentualeRicarico">Percentuale di Ricarico (%):</label>
     <input type="number" id="percentualeRicarico" value="20">
     <button onclick="calcolaPrezzoVendita()">Calcola Prezzo di Vendita</button>
 
-    <!-- Tabella per visualizzare i dati dei prodotti -->
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -28,14 +25,12 @@
             </tr>
         </thead>
         <tbody id="tabella-prodotti">
-            <!-- Dati dei prodotti verranno inseriti qui -->
         </tbody>
     </table>
 
     <script>
         let prodotti = [];
 
-        // Funzione per caricare il file JSON dei prodotti
         function caricaProdotti() 
         {
             var xhr = new XMLHttpRequest();
@@ -51,72 +46,22 @@
             xhr.send();
         }
 
-        // Funzione per visualizzare i prodotti nella tabella
         function visualizzaProdotti() 
         {
             const tabella = document.getElementById("tabella-prodotti");
-            tabella.innerHTML = ""; // Pulisce la tabella
+            tabella.innerHTML = "";
 
             prodotti.forEach(function(prodotto) 
             {
                 const riga = document.createElement("tr");
 
-                // Thumbnail
                 const cellaThumbnail = document.createElement("td");
                 const img = document.createElement("img");
                 img.src = prodotto.immagine;
                 img.alt = prodotto.nome;
                 img.className = "img-thumbnail";
-                img.style.width = "100px";  // Impostiamo una larghezza per la thumbnail
+                img.style.width = "100px";
                 cellaThumbnail.appendChild(img);
                 riga.appendChild(cellaThumbnail);
 
-                // Nome del prodotto con link alla pagina di dettaglio
-                const cellaNome = document.createElement("td");
-                const linkDettaglio = document.createElement("a");
-                linkDettaglio.href = `dettaglio.html?id=${prodotto.id}`;
-                linkDettaglio.textContent = prodotto.nome;
-                cellaNome.appendChild(linkDettaglio);
-                riga.appendChild(cellaNome);
-
-                // Prezzo di acquisto
-                const cellaPrezzoAcquisto = document.createElement("td");
-                cellaPrezzoAcquisto.textContent = prodotto.prezzoAcquisto.toFixed(2);
-                riga.appendChild(cellaPrezzoAcquisto);
-
-                // Celle vuote per prezzo di vendita e guadagno
-                const cellaPrezzoVendita = document.createElement("td");
-                cellaPrezzoVendita.className = "prezzoVendita";
-                riga.appendChild(cellaPrezzoVendita);
-
-                const cellaGuadagno = document.createElement("td");
-                cellaGuadagno.className = "guadagno";
-                riga.appendChild(cellaGuadagno);
-
-                tabella.appendChild(riga);
-            });
-        }
-
-        // Funzione per calcolare il prezzo di vendita e guadagno in base alla percentuale di ricarico
-        function calcolaPrezzoVendita() 
-        {
-            const percentualeRicarico = parseFloat(document.getElementById("percentualeRicarico").value) / 100;
-
-            const righe = document.querySelectorAll("#tabella-prodotti tr");
-            righe.forEach((riga, index) => 
-            {
-                const prodotto = prodotti[index];
-                const prezzoVendita = prodotto.prezzoAcquisto * (1 + percentualeRicarico);
-                const guadagno = prezzoVendita - prodotto.prezzoAcquisto;
-
-                riga.querySelector(".prezzoVendita").textContent = prezzoVendita.toFixed(2);
-                riga.querySelector(".guadagno").textContent = guadagno.toFixed(2);
-            });
-        }
-
-        // Carica i prodotti al caricamento della pagina
-        window.onload = caricaProdotti;
-    </script>
-
-</body>
-</html>
+                const cellaNome = document.createElement("
