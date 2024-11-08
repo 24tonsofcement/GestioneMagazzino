@@ -34,7 +34,7 @@
         function caricaProdotti() 
         {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "prodotti.json", true);
+            xhr.open("GET", "https://raw.githubusercontent.com/24tonsofcement/GestioneMagazzino/refs/heads/main/prodotti.json", true);
             xhr.onreadystatechange = function () 
             {
                 if (xhr.readyState === 4 && xhr.status === 200) 
