@@ -46,39 +46,4 @@
             xhr.send();
         }
 
-        function visualizzaProdotti() 
-        {
-            const tabella = document.getElementById("tabella-prodotti");
-            tabella.innerHTML = "";
-
-            prodotti.forEach(function(prodotto) 
-            {
-                const riga = document.createElement("tr");
-
-                const cellaThumbnail = document.createElement("td");
-                const img = document.createElement("img");
-                img.src = prodotto.immagine;
-                img.alt = prodotto.nome;
-                img.className = "img-thumbnail";
-                img.style.width = "100px";
-                cellaThumbnail.appendChild(img);
-                riga.appendChild(cellaThumbnail);
-
-                const cellaNome = document.createElement("
-        function calcolaPrezzoVendita() 
-        {
-            const percentualeRicarico = parseFloat(document.getElementById("percentualeRicarico").value) / 100;
-            const righe = document.querySelectorAll("#tabella-prodotti tr");
-            righe.forEach((riga, index) => 
-            {
-                const prodotto = prodotti[index];
-                const prezzoVendita = prodotto.prezzoAcquisto * (1 + percentualeRicarico);
-                const guadagno = prezzoVendita - prodotto.prezzoAcquisto;
-                riga.querySelector(".prezzoVendita").textContent = prezzoVendita.toFixed(2);
-                riga.querySelector(".guadagno").textContent = guadagno.toFixed(2);
-            });
-        }
-        window.onload = caricaProdotti;
-    </script>
-</body>
-</html>
+        function visualizzaProdott
