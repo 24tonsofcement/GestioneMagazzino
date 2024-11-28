@@ -3,102 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabella Prodotti con Prezzo di Vendita e Guadagno</title>
+    <title>Dettaglio Prodotto</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 
-    <h2>Prodotti</h2>
-    <label for="percentualeRicarico">Percentuale di Ricarico (%):</label>
-    <input type="number" id="percentualeRicarico" value="20">
-    <button onclick="calcolaPrezzoVendita()">Calcola Prezzo di Vendita</button>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Thumbnail</th>
-                <th>Nome</th>
-                <th>Prezzo di Acquisto (€)</th>
-                <th>Prezzo di Vendita (€)</th>
-                <th>Guadagno (€)</th>
-            </tr>
-        </thead>
-        <tbody id="tabella-prodotti"></tbody>
-    </table>
+    <div class="container">
+        <h2 id="nomeProdotto">Dettaglio Prodotto</h2>
+        <img id="immagineProdotto" class="img-fluid mb-4" alt="Immagine del prodotto">
+        <p><strong>Prezzo di Acquisto:</strong> €<span id="prezzoAcquisto"></span></p>
+        <p><strong>Quantità:</strong> <span id="quantità"></span></p>
+        <a href="index.html" class="btn btn-primary">Torna alla Lista</a>
+    </div>
 
     <script>
-        let prodotti = [];
-
-        function caricaProdotti() {
+        function caricaDettaglioProdotto() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const file = urlParams.get('file');
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "prodotti.json", true);
+            xhr.open("GET", file, true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    prodotti = JSON.parse(xhr.responseText);
-                    visualizzaProdotti();
+                    const prodotto = JSON.parse(xhr.responseText);
+                    document.getElementById("nomeProdotto").textContent = prodotto.nome;
+                    document.getElementById("immagineProdotto").src = prodotto.immagine;
+                    document.getElementById("prezzoAcquisto").textContent = prodotto.prezzoAcquisto.toFixed(2);
+                    document.getElementById("quantità").textContent = prodotto.quantità;
                 }
             };
             xhr.send();
         }
 
-        function visualizzaProdotti() {
-            const tabella = document.getElementById("tabella-prodotti");
-            tabella.innerHTML = "";
-
-            prodotti.forEach(function (prodotto) {
-                const riga = document.createElement("tr");
-
-                // Thumbnail
-                const cellaThumbnail = document.createElement("td");
-                const img = document.createElement("img");
-                img.src = prodotto.immagine;
-                img.alt = prodotto.nome;
-                img.className = "img-thumbnail";
-                img.style.width = "100px";
-                cellaThumbnail.appendChild(img);
-                riga.appendChild(cellaThumbnail);
-
-                // Nome del prodotto con link al dettaglio
-                const cellaNome = document.createElement("td");
-                const linkDettaglio = document.createElement("a");
-                linkDettaglio.href = `dettaglio.html?file=prodotto${prodotto.id}.json`;
-                linkDettaglio.textContent = prodotto.nome;
-                cellaNome.appendChild(linkDettaglio);
-                riga.appendChild(cellaNome);
-
-                // Prezzo di acquisto
-                const cellaPrezzoAcquisto = document.createElement("td");
-                cellaPrezzoAcquisto.textContent = prodotto.prezzoAcquisto.toFixed(2);
-                riga.appendChild(cellaPrezzoAcquisto);
-
-                // Celle vuote per prezzo di vendita e guadagno
-                const cellaPrezzoVendita = document.createElement("td");
-                cellaPrezzoVendita.className = "prezzoVendita";
-                riga.appendChild(cellaPrezzoVendita);
-
-                const cellaGuadagno = document.createElement("td");
-                cellaGuadagno.className = "guadagno";
-                riga.appendChild(cellaGuadagno);
-
-                tabella.appendChild(riga);
-            });
-        }
-
-        function calcolaPrezzoVendita() {
-            const percentualeRicarico = parseFloat(document.getElementById("percentualeRicarico").value) / 100;
-
-            const righe = document.querySelectorAll("#tabella-prodotti tr");
-            righe.forEach((riga, index) => {
-                const prodotto = prodotti[index];
-                const prezzoVendita = prodotto.prezzoAcquisto * (1 + percentualeRicarico);
-                const guadagno = prezzoVendita - prodotto.prezzoAcquisto;
-
-                riga.querySelector(".prezzoVendita").textContent = prezzoVendita.toFixed(2);
-                riga.querySelector(".guadagno").textContent = guadagno.toFixed(2);
-            });
-        }
-
-        window.onload = caricaProdotti;
+        window.onload = caricaDettaglioProdotto;
     </script>
 
 </body>

@@ -47,8 +47,6 @@
 
             prodotti.forEach(function (prodotto) {
                 const riga = document.createElement("tr");
-
-                // Thumbnail
                 const cellaThumbnail = document.createElement("td");
                 const img = document.createElement("img");
                 img.src = prodotto.immagine;
@@ -58,7 +56,6 @@
                 cellaThumbnail.appendChild(img);
                 riga.appendChild(cellaThumbnail);
 
-                // Nome del prodotto con link al dettaglio
                 const cellaNome = document.createElement("td");
                 const linkDettaglio = document.createElement("a");
                 linkDettaglio.href = `dettaglio.html?file=prodotto${prodotto.id}.json`;
@@ -66,12 +63,10 @@
                 cellaNome.appendChild(linkDettaglio);
                 riga.appendChild(cellaNome);
 
-                // Prezzo di acquisto
                 const cellaPrezzoAcquisto = document.createElement("td");
                 cellaPrezzoAcquisto.textContent = prodotto.prezzoAcquisto.toFixed(2);
                 riga.appendChild(cellaPrezzoAcquisto);
 
-                // Celle vuote per prezzo di vendita e guadagno
                 const cellaPrezzoVendita = document.createElement("td");
                 cellaPrezzoVendita.className = "prezzoVendita";
                 riga.appendChild(cellaPrezzoVendita);
@@ -86,13 +81,11 @@
 
         function calcolaPrezzoVendita() {
             const percentualeRicarico = parseFloat(document.getElementById("percentualeRicarico").value) / 100;
-
             const righe = document.querySelectorAll("#tabella-prodotti tr");
             righe.forEach((riga, index) => {
                 const prodotto = prodotti[index];
                 const prezzoVendita = prodotto.prezzoAcquisto * (1 + percentualeRicarico);
                 const guadagno = prezzoVendita - prodotto.prezzoAcquisto;
-
                 riga.querySelector(".prezzoVendita").textContent = prezzoVendita.toFixed(2);
                 riga.querySelector(".guadagno").textContent = guadagno.toFixed(2);
             });
