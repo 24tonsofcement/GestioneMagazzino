@@ -9,7 +9,6 @@
 <body>
 
     <h2>Prodotti</h2>
-    
     <label for="percentualeRicarico">Percentuale di Ricarico (%):</label>
     <input type="number" id="percentualeRicarico" value="20">
     <button onclick="calcolaPrezzoVendita()">Calcola Prezzo di Vendita</button>
@@ -24,21 +23,17 @@
                 <th>Guadagno (€)</th>
             </tr>
         </thead>
-        <tbody id="tabella-prodotti">
-        </tbody>
+        <tbody id="tabella-prodotti"></tbody>
     </table>
 
     <script>
         let prodotti = [];
 
-        function caricaProdotti() 
-        {
+        function caricaProdotti() {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://raw.githubusercontent.com/24tonsofcement/GestioneMagazzino/refs/heads/main/prodotti.json", true);
-            xhr.onreadystatechange = function () 
-            {
-                if (xhr.readyState === 4 && xhr.status === 200) 
-                {
+            xhr.open("GET", "prodotti.json", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     prodotti = JSON.parse(xhr.responseText);
                     visualizzaProdotti();
                 }
@@ -46,4 +41,65 @@
             xhr.send();
         }
 
-        function visualizzaProdott
+        function visualizzaProdotti() {
+            const tabella = document.getElementById("tabella-prodotti");
+            tabella.innerHTML = "";
+
+            prodotti.forEach(function (prodotto) {
+                const riga = document.createElement("tr");
+
+                // Thumbnail
+                const cellaThumbnail = document.createElement("td");
+                const img = document.createElement("img");
+                img.src = prodotto.immagine;
+                img.alt = prodotto.nome;
+                img.className = "img-thumbnail";
+                img.style.width = "100px";
+                cellaThumbnail.appendChild(img);
+                riga.appendChild(cellaThumbnail);
+
+                // Nome del prodotto con link al dettaglio
+                const cellaNome = document.createElement("td");
+                const linkDettaglio = document.createElement("a");
+                linkDettaglio.href = `dettaglio.html?file=prodotto${prodotto.id}.json`;
+                linkDettaglio.textContent = prodotto.nome;
+                cellaNome.appendChild(linkDettaglio);
+                riga.appendChild(cellaNome);
+
+                // Prezzo di acquisto
+                const cellaPrezzoAcquisto = document.createElement("td");
+                cellaPrezzoAcquisto.textContent = prodotto.prezzoAcquisto.toFixed(2);
+                riga.appendChild(cellaPrezzoAcquisto);
+
+                // Celle vuote per prezzo di vendita e guadagno
+                const cellaPrezzoVendita = document.createElement("td");
+                cellaPrezzoVendita.className = "prezzoVendita";
+                riga.appendChild(cellaPrezzoVendita);
+
+                const cellaGuadagno = document.createElement("td");
+                cellaGuadagno.className = "guadagno";
+                riga.appendChild(cellaGuadagno);
+
+                tabella.appendChild(riga);
+            });
+        }
+
+        function calcolaPrezzoVendita() {
+            const percentualeRicarico = parseFloat(document.getElementById("percentualeRicarico").value) / 100;
+
+            const righe = document.querySelectorAll("#tabella-prodotti tr");
+            righe.forEach((riga, index) => {
+                const prodotto = prodotti[index];
+                const prezzoVendita = prodotto.prezzoAcquisto * (1 + percentualeRicarico);
+                const guadagno = prezzoVendita - prodotto.prezzoAcquisto;
+
+                riga.querySelector(".prezzoVendita").textContent = prezzoVendita.toFixed(2);
+                riga.querySelector(".guadagno").textContent = guadagno.toFixed(2);
+            });
+        }
+
+        window.onload = caricaProdotti;
+    </script>
+
+</body>
+</html>
